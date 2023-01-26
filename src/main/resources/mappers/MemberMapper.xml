@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.cocoya.matzip.mappers.IMemberMapper">
+    <insert id="insertUser"
+            parameterType="dev.cocoya.matzip.entities.member.UserEntity">
+        INSERT INTO `matzip_member`.`users` (`id`, `nickname`, `registered_on`)
+        VALUES (#{id},
+                #{nickname},
+                IFNULL(#{registeredOn}, DEFAULT(`registered_on`)))
+    </insert>
+
+    <select id="selectUserById"
+            resultType="dev.cocoya.matzip.entities.member.UserEntity">
+        SELECT `id`            AS `id`,
+               `nickname`      AS `nickname`,
+               `registered_on` AS `registeredOn`
+        FROM `matzip_member`.`users`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </select>
+</mapper>

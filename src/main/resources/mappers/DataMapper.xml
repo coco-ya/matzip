@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.cocoya.matzip.mappers.IDataMapper">
+    <insert id="insertReview"
+            useGeneratedKeys="true"
+            keyColumn="index"
+            keyProperty="index"
+            parameterType="dev.cocoya.matzip.entities.data.ReviewEntity">
+        INSERT INTO `matzip_data`.`reviews` (`user_id`, `place_index`, `score`, `content`)
+        VALUES (#{userId}, #{placeIndex}, #{score}, #{content})
+    </insert>
+
+    <insert id="insertReviewImage"
+            useGeneratedKeys="true"
+            keyColumn="index"
+            keyProperty="index"
+            parameterType="dev.cocoya.matzip.entities.data.ReviewImageEntity">
+        INSERT INTO `matzip_data`.`review_images` (`review_index`, `data`, `type`)
+        VALUES (#{reviewIndex}, #{data}, #{type})
+    </insert>
+
+    <select id="selectPlaceByIndex"
+            resultType="dev.cocoya.matzip.entities.data.PlaceEntity">
+        SELECT `index`             AS `index`,
+               `name`              AS `name`,
+               `image`             AS `image`,
+               `image_type`        AS `imageType`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `contact_first`     AS `contactFirst`,
+               `contact_second`    AS `contactSecond`,
+               `contact_third`     AS `contactThird`,
+               `homepage`          AS `homepage`,
+               `open_from`         AS `openFrom`,
+               `open_to`           AS `openTo`,
+               `break_from`        AS `breakFrom`,
+               `break_to`          AS `breakTo`,
+               `description`       AS `description`,
+               `latitude`          AS `latitude`,
+               `longitude`         AS `longitude`,
+               `category_index`    AS `categoryIndex`,
+               `created_on`        AS `createdOn`,
+               `modified_on`       AS `modifiedOn`
+        FROM `matzip_data`.`places`
+        WHERE `index` = #{index}
+        LIMIT 1
+    </select>
+
+    <select id="selectPlacesExceptImage"
+            resultType="dev.cocoya.matzip.entities.data.PlaceEntity">
+        SELECT `index`             AS `index`,
+               `name`              AS `name`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `contact_first`     AS `contactFirst`,
+               `contact_second`    AS `contactSecond`,
+               `contact_third`     AS `contactThird`,
+               `homepage`          AS `homepage`,
+               `open_from`         AS `openFrom`,
+               `open_to`           AS `openTo`,
+               `break_from`        AS `breakFrom`,
+               `break_to`          AS `breakTo`,
+               `description`       AS `description`,
+               `latitude`          AS `latitude`,
+               `longitude`         AS `longitude`,
+               `category_index`    AS `categoryIndex`,
+               `created_on`        AS `createdOn`,
+               `modified_on`       AS `modifiedOn`
+        FROM `matzip_data`.`places`
+        WHERE `latitude` BETWEEN #{minLat} AND #{maxLat}
+          AND `longitude` BETWEEN #{minLng} AND #{maxLng}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
