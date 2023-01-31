@@ -845,6 +845,7 @@ body {
 #detailContainer > .review-exist.visible{
     display: flex;
     align-items: center;
+    color: rgb(170 170 170);
     justify-content: center;
     padding: 2rem;
 }

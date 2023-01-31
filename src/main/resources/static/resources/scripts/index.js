@@ -19,6 +19,8 @@ detailContainer.show = (placeObject) => {
 
     detailContainer.querySelector('[rel = "titleReviewCount"]').innerText =
         `${placeObject['reviewCount']}`;
+
+
     const openFrom = new Date(placeObject['openFrom']);
     const openTo = new Date(placeObject['openTo']);
     detailContainer.querySelector('[rel="openText"]').innerText = `${placeObject['openFrom']} - ${placeObject['openTo']}`;
@@ -29,9 +31,11 @@ detailContainer.show = (placeObject) => {
 
 
 
-    //리뷰 없으면 등록된 리뷰가 없다고 나오기
+    //리뷰 없으면 등록된 리뷰가 없다고 나오기 -> 리뷰 있는 맛집 처음에는 안나오고 없는거 드갔다가 나오면 생겨있음
     if (placeObject['reviewCount'] === 0) {
         detailContainer.querySelector('[rel="reviewExist"]').classList.add('visible');
+    }else{
+        detailContainer.querySelector('[rel="reviewExist"]').classList.remove('visible');
     }
 
 
@@ -228,6 +232,8 @@ const reviewContainer = detailContainer.querySelector('[rel = "reviewContainer"]
 const loadReviews = (placeIndex) => {
     //리뷰 불러오기
     reviewContainer.innerHTML = ''; // 리뷰 초기화
+
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `./data/review?pi=${placeIndex}`);
     xhr.onreadystatechange = () => {
