@@ -3,13 +3,78 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.cocoya.matzip.mappers.IDataMapper">
+
+    <select id="selectPlacesExceptImage"
+            resultType="dev.cocoya.matzip.vos.PlaceVo">
+        SELECT `place`.`index`             AS `index`,
+               `place`.`name`              AS `name`,
+               `place`.`address_primary`   AS `addressPrimary`,
+               `place`.`address_secondary` AS `addressSecondary`,
+               `place`.`contact_first`     AS `contactFirst`,
+               `place`.`contact_second`    AS `contactSecond`,
+               `place`.`contact_third`     AS `contactThird`,
+               `place`.`homepage`          AS `homepage`,
+               `place`.`open_from`         AS `openFrom`,
+               `place`.`open_to`           AS `openTo`,
+               `place`.`break_from`        AS `breakFrom`,
+               `place`.`break_to`          AS `breakTo`,
+               `place`.`description`       AS `description`,
+               `place`.`latitude`          AS `latitude`,
+               `place`.`longitude`         AS `longitude`,
+               `place`.`category_index`    AS `categoryIndex`,
+               `place`.`created_on`        AS createdOn,
+               `place`.`modified_on`       AS modifiedOn,
+               `place_categories`.`text`   AS `categoryText`,
+               AVG(`review`.`score`)       AS `score`,
+               COUNT(review.place_index)  AS `reviewCount`,
+               place.open_from > now()
+                   or now() > place.open_to    AS `isClose`
+        FROM `matzip_data`.`places` AS `place`
+                 LEFT JOIN `matzip_data`.place_categories
+                           ON `place_categories`.`index` = `place`.`category_index`
+                 LEFT JOIN `matzip_data`.reviews AS `review` ON place.`index` = review.place_index
+        WHERE `latitude` BETWEEN #{minLat} AND #{maxLat}
+          AND `longitude` BETWEEN #{minLng} AND #{maxLng}
+        GROUP BY `place`.`index`
+    </select>
+
+    <select id="selectPlaceByIndex"
+            resultType="dev.cocoya.matzip.entities.data.PlaceEntity">
+        SELECT `places`.`index`             AS `index`,
+               `places`.`name`              AS `name`,
+               `places`.`image`             AS `image`,
+               `places`.`image_type`        AS `imageType`,
+               `places`.`address_primary`   AS `addressPrimary`,
+               `places`.`address_secondary` AS `addressSecondary`,
+               `places`.`contact_first`     AS `contactFirst`,
+               `places`.`contact_second`    AS `contactSecond`,
+               `places`.`contact_third`     AS `contactThird`,
+               `places`.`homepage`          AS `homepage`,
+               `places`.`open_from`         AS `openFrom`,
+               `places`.`open_to`           AS `openTo`,
+               `places`.`break_from`        AS `breakFrom`,
+               `places`.`break_to`          AS `breakTo`,
+               `places`.`description`       AS `description`,
+               `places`.`latitude`          AS `latitude`,
+               `places`.`longitude`         AS `longitude`,
+               `places`.`category_index`    AS `categoryIndex`,
+               `places`.`created_on`        AS createdOn,
+               `places`.`modified_on`       AS modifiedOn,
+               `place_categories`.`text`    AS `categoryText`
+        FROM `matzip_data`.`places`
+                 LEFT JOIN `matzip_data`.place_categories
+                           ON `place_categories`.`index` = `places`.`category_index`
+        WHERE places.`index` = #{index}
+    </select>
+
     <insert id="insertReview"
             useGeneratedKeys="true"
             keyColumn="index"
             keyProperty="index"
             parameterType="dev.cocoya.matzip.entities.data.ReviewEntity">
-        INSERT INTO `matzip_data`.`reviews` (`user_id`, `place_index`, `score`, `content`)
+        INSERT INTO `matzip_data`.reviews(`user_id`, `place_index`, `score`, `content`)
         VALUES (#{userId}, #{placeIndex}, #{score}, #{content})
+
     </insert>
 
     <insert id="insertReviewImage"
@@ -17,75 +82,45 @@
             keyColumn="index"
             keyProperty="index"
             parameterType="dev.cocoya.matzip.entities.data.ReviewImageEntity">
-        INSERT INTO `matzip_data`.`review_images` (`review_index`, `data`, `type`)
+        INSERT INTO `matzip_data`.review_images(`review_index`, `data`, `type`)
         VALUES (#{reviewIndex}, #{data}, #{type})
+
     </insert>
 
-    <select id="selectPlaceByIndex"
-            resultType="dev.cocoya.matzip.entities.data.PlaceEntity">
-        SELECT `index`             AS `index`,
-               `name`              AS `name`,
-               `image`             AS `image`,
-               `image_type`        AS `imageType`,
-               `address_primary`   AS `addressPrimary`,
-               `address_secondary` AS `addressSecondary`,
-               `contact_first`     AS `contactFirst`,
-               `contact_second`    AS `contactSecond`,
-               `contact_third`     AS `contactThird`,
-               `homepage`          AS `homepage`,
-               `open_from`         AS `openFrom`,
-               `open_to`           AS `openTo`,
-               `break_from`        AS `breakFrom`,
-               `break_to`          AS `breakTo`,
-               `description`       AS `description`,
-               `latitude`          AS `latitude`,
-               `longitude`         AS `longitude`,
-               `category_index`    AS `categoryIndex`,
-               `created_on`        AS `createdOn`,
-               `modified_on`       AS `modifiedOn`
-        FROM `matzip_data`.`places`
+    <select id="selectReviewsByPlaceIndex"
+            resultType="dev.cocoya.matzip.vos.ReviewVo">
+        select `review`.`index`       AS `index`,
+               `review`.`user_id`     AS `userId`,
+               `review`.`place_index` AS `placeIndex`,
+               `review`.`score`       AS `score`,
+               `review`.`content`     AS `content`,
+               `review`.`date`            as date,
+               `user`.`nickname`      AS `userNickname`
+        FROM `matzip_data`.reviews AS `review`
+                 LEFT JOIN `matzip_member`.users AS `user` ON `review`.`user_id` = `user`.`id`
+        WHERE `review`.`place_index` = #{placeIndex}
+        ORDER BY `review`.`index` DESC
+    </select>
+
+    <select id="selectReviewImagesByReviewIndexExceptData"
+            resultType="dev.cocoya.matzip.entities.data.ReviewImageEntity">
+        select `index`        AS `index`,
+               `review_index` AS `reviewIndex`
+        FROM `matzip_data`.`review_images`
+        WHERE `review_index` = #{reviewIndex}
+        ORDER BY `index`
+    </select>
+
+    <select id="selectReviewImageByIndex"
+            resultType="dev.cocoya.matzip.entities.data.ReviewImageEntity">
+        select `index`        AS `index`,
+               `review_index` AS `reviewIndex`,
+               `data`         AS `data`,
+               `type`         AS `type`
+        FROM `matzip_data`.`review_images`
         WHERE `index` = #{index}
         LIMIT 1
     </select>
 
-    <select id="selectPlacesExceptImage"
-            resultType="dev.cocoya.matzip.entities.data.PlaceEntity">
-        SELECT `index`             AS `index`,
-               `name`              AS `name`,
-               `address_primary`   AS `addressPrimary`,
-               `address_secondary` AS `addressSecondary`,
-               `contact_first`     AS `contactFirst`,
-               `contact_second`    AS `contactSecond`,
-               `contact_third`     AS `contactThird`,
-               `homepage`          AS `homepage`,
-               `open_from`         AS `openFrom`,
-               `open_to`           AS `openTo`,
-               `break_from`        AS `breakFrom`,
-               `break_to`          AS `breakTo`,
-               `description`       AS `description`,
-               `latitude`          AS `latitude`,
-               `longitude`         AS `longitude`,
-               `category_index`    AS `categoryIndex`,
-               `created_on`        AS `createdOn`,
-               `modified_on`       AS `modifiedOn`
-        FROM `matzip_data`.`places`
-        WHERE `latitude` BETWEEN #{minLat} AND #{maxLat}
-          AND `longitude` BETWEEN #{minLng} AND #{maxLng}
-    </select>
+
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

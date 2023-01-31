@@ -1,5 +1,7 @@
 package dev.cocoya.matzip.entities.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,9 +16,13 @@ public class PlaceEntity {
     private String contactSecond;
     private String contactThird;
     private String homepage;
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+9")
     private Date openFrom;
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+9")
     private Date openTo;
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+9")
     private Date breakFrom;
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+9")
     private Date breakTo;
     private String description;
     private double latitude;

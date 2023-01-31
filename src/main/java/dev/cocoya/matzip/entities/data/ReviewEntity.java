@@ -1,5 +1,8 @@
 package dev.cocoya.matzip.entities.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 import java.util.Objects;
 
 public class ReviewEntity {
@@ -8,6 +11,9 @@ public class ReviewEntity {
     private int placeIndex;
     private int score;
     private String content;
+
+    @JsonFormat(pattern = "YY.MM.dd", timezone = "GMT+9")
+    private Date date;
 
     public int getIndex() {
         return index;
@@ -52,6 +58,14 @@ public class ReviewEntity {
     public ReviewEntity setContent(String content) {
         this.content = content;
         return this;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override

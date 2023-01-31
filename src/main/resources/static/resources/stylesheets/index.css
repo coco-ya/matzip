@@ -5,6 +5,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    overflow: hidden;
 }
 
 #listContainer {
@@ -81,8 +82,9 @@ body {
 }
 
 #list > .item > .info > .name-container > .name {
-    color: rgb(52, 152, 219);
-    font-size: 1.25rem;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    font-size: 1.1rem;
     margin-right: 0.5rem;
 }
 
@@ -148,7 +150,7 @@ body {
 }
 
 #list > .item > .info > .contact {
-    color: rgb(20, 143, 119);
+    color: rgb(255, 140, 0);
     font-size: 0.9rem;
 }
 
@@ -192,45 +194,63 @@ body {
 }
 
 #searchForm > .title {
-    height: 3.75rem;
-    background-color: rgb(44, 62, 80);
-    color: rgb(255, 255, 255);
-    cursor: default;
-    font-family: 'Monoton', cursive;
-    font-size: 1.75rem;
-    pointer-events: none;
-    text-align: center;
-    user-select: none;
+    background-color: rgb(255 205 131);
 
+    height: 3.05rem;
+    cursor: default;
+    color: rgb(255, 255, 255);
+    /* font-family: 'Monoton', cursive; */
+    font-size: 1.3rem;
+    pointer-events: none;
+    user-select: none;
     align-items: center;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    padding-left: 1.5rem;
+    justify-content: flex-start;
 }
 
 #searchForm > .label {
+    background-color: rgb(255 205 131);
     align-items: stretch;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
-#searchForm > .label > .input {
-    width: 100%;
-    background-color: rgb(44, 62, 80);
-    border: none;
-    border-top: 0.0625rem solid rgb(64, 82, 100);
-    border-bottom: 0.0625rem solid rgb(64, 82, 100);
-    box-sizing: border-box;
-    color: rgb(255, 255, 255);
-    font: inherit;
-    outline: none;
-    padding: 0.75rem 1rem;
+#searchForm > .label > .search-box {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem;
+    margin: 0.5rem 1rem;
+    border: 0.1rem solid rgb(0, 0, 0);
+    border-radius: 0.5rem;
 }
 
-#searchForm > .label > .input:hover,
-#searchForm > .label > .input:focus {
-    background-color: rgb(64, 82, 100);
+#searchForm > .label > .search-box > .icon {
+    margin-left: 1rem;
+
+}
+
+#searchForm > .label > .search-box > .input {
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    border: none;
+    color: rgb(0, 0, 0);
+    /*border-top: 0.0625rem solid rgb(64, 82, 100);*/
+    /*border-bottom: 0.0625rem solid rgb(64, 82, 100);*/
+    box-sizing: border-box;
+
+    font: inherit;
+    outline: none;
+    padding: 0.55rem 1.1rem;
+}
+
+#searchForm > .label > .search-box > .input:hover,
+#searchForm > .label > .search-box > .input:focus {
+    /*background-color: rgb(64, 82, 100);*/
 }
 
 #searchForm > .button-container {
@@ -241,20 +261,21 @@ body {
 }
 
 #searchForm > .button-container > .button {
-    background-color: rgb(44, 62, 80);
+    background-color: rgb(255 205 131);
     color: rgb(255, 255, 255);
     flex: 1;
+    font-weight: bold;
     padding: 0.75rem;
     text-align: center;
     text-decoration: none;
 }
 
 #searchForm > .button-container > .button:hover {
-    background-color: rgb(64, 82, 100);
+    background-color: rgb(255, 127, 80);
 }
 
 #searchForm > .button-container > .button:active {
-    background-color: rgb(44, 62, 80);
+    background-color: rgb(255, 99, 71);
 }
 
 #loginContainer {
@@ -282,12 +303,19 @@ body {
     justify-content: flex-start;
 }
 
-#detailContainer > .title-container {
-    min-height: 3.75rem;
-    background-color: rgb(44, 62, 80);
-    color: rgb(255, 255, 255);
-    padding: 0 1.5rem;
+#detailContainer > .review-unsigned {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
 
+#detailContainer > .title-container {
+    min-height: 3.05rem;
+    background-color: rgb(255 205 131);
+    color: rgb(255, 255, 255);
+    padding: 0px 1rem;
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -296,7 +324,7 @@ body {
 
 #detailContainer > .title-container > .title {
     flex: 1;
-    font-size: 1.25rem;
+    font-weight: bold;
 }
 
 #detailContainer > .title-container > .close-button {
@@ -305,8 +333,8 @@ body {
 }
 
 #detailContainer > .image-container {
-    min-height: 20rem;
-    max-height: 20rem;
+    min-height: 13rem;
+    max-height: 13rem;
     border-bottom: 0.0625rem solid rgb(234, 236, 238);
     display: grid;
     grid-gap: 0.0625rem;
@@ -323,7 +351,7 @@ body {
 }
 
 #detailContainer > .image-container::-webkit-scrollbar-thumb {
-    background-color: rgb(44, 62, 80);
+    background-color: rgb(255 205 131);
     border-radius: 999rem;
 }
 
@@ -370,7 +398,7 @@ body {
 }
 
 #detailContainer > .rate-container {
-    border-bottom: 0.0625rem solid rgb(234, 236, 238);
+    /*border-bottom: 0.0625rem solid rgb(234, 236, 238);*/
 
     align-items: stretch;
     display: flex;
@@ -378,11 +406,28 @@ body {
     justify-content: flex-start;
 }
 
-#detailContainer > .rate-container > .title {
-    font-size: 1.375rem;
-    font-weight: 500;
+
+#detailContainer > .rate-container > .sub-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#detailContainer > .rate-container > .sub-title > .title {
+    font-size: 1.14rem;
+    margin-left: 1.4rem;
+    margin-right: 0.3rem;
+    font-weight: 600;
     padding: 1rem 0 0.25rem 0;
     text-align: center;
+}
+
+#detailContainer > .rate-container > .sub-title > .category {
+    font-size: 0.8rem;
+    color: rgb(170 170 170);
+    padding-top: 0.8rem;
 }
 
 #detailContainer > .rate-container > .star-container {
@@ -406,10 +451,11 @@ body {
 
 #detailContainer > .rate-container > .star-container > .full-score {
     color: rgb(128, 139, 150);
+    font-size: 0.8rem;
 }
 
 #detailContainer > .rate-container > .button-container {
-    border-top: 0.0625rem solid rgb(234, 236, 238);
+    /*border-top: 0.0625rem solid rgb(234, 236, 238);*/
     margin-top: 1rem;
 
     align-items: stretch;
@@ -421,13 +467,17 @@ body {
 #detailContainer > .rate-container > .button-container > .button {
     color: rgb(86, 101, 115);
     flex: 1;
-    padding: 0.875rem 0.75rem;
+    padding: 0.275rem 0.775rem;
     text-decoration: none;
 
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+#detailContainer > .rate-container > .button-container > .button > .text {
+    font-size: 0.8rem;
 }
 
 #detailContainer > .rate-container > .button-container > .button:hover {
@@ -470,24 +520,28 @@ body {
 }
 
 #detailContainer > .info-container > .item > .icon {
-    width: 1.5rem;
+    width: 1.1rem;
     color: rgb(171, 178, 185);
-    font-size: 1.125rem;
+    font-size: 1rem;
     margin-right: 0.75rem;
     text-align: center;
 }
 
 #detailContainer > .info-container > .item > .text {
     color: rgb(44, 62, 80);
-
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
+    font-size: 0.85rem;
 }
 
 #detailContainer > .info-container > .item > .text > .link {
-    color: rgb(20, 143, 119);
+    color: rgb(44, 62, 80);
     text-decoration: none;
+}
+
+#detailContainer > .info-container > .item > .text > .link.homePage {
+    color: rgb(255, 140, 0);
 }
 
 #detailContainer > .info-container > .item > .text > .link:hover {
@@ -513,7 +567,10 @@ body {
 }
 
 #detailContainer > .review-container > .item > .nickname {
-    color: rgb(86, 101, 115);
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    flex: 1;
+    font-size: 0.9rem;
     margin-bottom: 0.75rem;
 }
 
@@ -529,7 +586,7 @@ body {
 }
 
 #detailContainer > .review-container > .item > .image-container::-webkit-scrollbar {
-    height: 0.5rem;
+    height: 0.4rem;
 }
 
 #detailContainer > .review-container > .item > .image-container::-webkit-scrollbar-track {
@@ -537,13 +594,13 @@ body {
 }
 
 #detailContainer > .review-container > .item > .image-container::-webkit-scrollbar-thumb {
-    background-color: rgb(39, 55, 70);
+    background-color: rgb(255 205 131);
     border-radius: 999rem;
 }
 
 #detailContainer > .review-container > .item > .image-container > .image {
-    width: 62.5%;
-    aspect-ratio: 16 / 9;
+    width: 37%;
+    aspect-ratio: 16 / 13;
     border: 0.0625rem solid rgb(234, 236, 238);
     cursor: pointer;
     object-fit: cover;
@@ -569,15 +626,15 @@ body {
 }
 
 #detailContainer > .review-container > .item > .content {
-    background-color: rgb(234, 236, 238);
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.15rem;
 }
 
 #detailContainer > .review-container > .item > .date {
     color: rgb(171, 178, 185);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 #reviewForm {
@@ -591,6 +648,7 @@ body {
 }
 
 #reviewForm > .title {
+    font-size: 0.9rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
@@ -624,14 +682,15 @@ body {
 
 #reviewForm > .content-container > .submit-button {
     appearance: none;
-    background-color: rgb(52, 152, 219);
+    background-color: rgb(255 205 131);
     border: none;
     border-radius: 0.25rem;
     color: rgb(255, 255, 255);
     cursor: pointer;
     font: inherit;
     outline: none;
-    padding: 0 0.875rem;
+    font-size: 0.9rem;
+    padding: 0 1.075rem;
 }
 
 #reviewForm > .content-container > .submit-button:hover {
@@ -646,7 +705,7 @@ body {
     background-color: rgb(234, 236, 238);
     border-radius: 0.25rem;
     margin-bottom: 0.5rem;
-    padding: 0.75rem 1rem;
+    padding: 0.55rem 1rem;
 
     align-items: flex-end;
     display: flex;
@@ -668,7 +727,7 @@ body {
 #reviewForm > .score-container > .star-container {
     color: rgb(213, 216, 220);
     flex: 1;
-    font-size: 1.375rem;
+    font-size: 1.175rem;
     letter-spacing: -0.125rem;
     margin-left: 0.5rem;
     text-align: right;
@@ -704,13 +763,13 @@ body {
 }
 
 #reviewForm > .image-container::-webkit-scrollbar-thumb {
-    background-color: rgb(39, 55, 70);
+    background-color: rgb(255 205 131);
     border-radius: 999rem;
 }
 
 #reviewForm > .image-container > .image {
     width: 33.3%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 13;
     border: 0.0625rem solid rgb(234, 236, 238);
     border-radius: 0.5rem;
     cursor: pointer;
@@ -735,8 +794,8 @@ body {
 }
 
 #reviewForm > .image-select-button {
-    color: rgb(52, 152, 219);
-    font-size: 0.9rem;
+    color: rgb(255 99 71);
+    font-size: 0.8rem;
     text-decoration: none;
 }
 
@@ -745,12 +804,47 @@ body {
 }
 
 
+#detailContainer > .btn_entry_close {
+    position: absolute;
+    right: -43px;
+    top: 24px;
+    width: 43px;
+    height: 44px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-left: 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 1px;
+    line-height: 1px;
+    box-shadow: 0 3px 7px 0 rgb(0 0 0 / 20%);
+    cursor: pointer;
+}
 
+#detailContainer > .review-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 1rem;
 
+}
 
+#detailContainer > .review-title-container > .title {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
 
+#detailContainer > .review-title-container > .title-review-count {
+    font-weight: bold;
+    color: rgb(255, 140, 0);
+}
 
+#detailContainer > .review-exist{
+    display: none;
+}
 
-
-
-
+#detailContainer > .review-exist.visible{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
