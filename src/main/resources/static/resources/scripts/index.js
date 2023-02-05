@@ -20,6 +20,7 @@ detailContainer.show = (placeObject) => {
     detailContainer.querySelector('[rel = "titleReviewCount"]').innerText =
         `${placeObject['reviewCount']}`;
 
+    detailContainer.querySelector('[rel="detailImage"]').setAttribute('src', `./data/placeImage?pi=${placeObject['index']}`);
 
     const openFrom = new Date(placeObject['openFrom']);
     const openTo = new Date(placeObject['openTo']);
@@ -29,17 +30,12 @@ detailContainer.show = (placeObject) => {
     detailContainer.querySelector('[rel = "contactText"]').innerText = contact;
     detailContainer.querySelector('[rel = "contactText"]').setAttribute('href', `tel:${contact}`);
 
-
-
     //리뷰 없으면 등록된 리뷰가 없다고 나오기 -> 리뷰 있는 맛집 처음에는 안나오고 없는거 드갔다가 나오면 생겨있음
     if (placeObject['reviewCount'] === 0) {
         detailContainer.querySelector('[rel="reviewExist"]').classList.add('visible');
     }else{
         detailContainer.querySelector('[rel="reviewExist"]').classList.remove('visible');
     }
-
-
-
 
     // 홈페이지
     const homepageTextElement = detailContainer.querySelector('[rel="homepageText"]');
@@ -175,6 +171,7 @@ const loadPlaces = (ne, sw) => {
 
                     const placeElement = new DOMParser().parseFromString(placeHtml, 'text/html').querySelector('[rel= "item"]');
 
+
                     placeElement.addEventListener('click', () => {
                         const latLng = new kakao.maps.LatLng(placeObject['latitude'], placeObject['longitude']);
                         mapObject.setCenter(latLng);
@@ -242,40 +239,79 @@ const loadReviews = (placeIndex) => {
             if (xhr.status >= 200 && xhr.status < 300) {
                 const responseArray = JSON.parse(xhr.responseText);
                 for (const reviewObject of responseArray) {
-
                     const itemHtml = `
                     <li class="item" rel="item">
                         <span class="nickname" rel="nickname">${reviewObject['userNickname']}</span>
                         <div class="image-container" rel="imageContainer">
                         </div>
-                        <span class="content" rel="content">${reviewObject['content']}</span>
+                        <div class="contentDelete">
+                            <span class="content" rel="content">${reviewObject['content']}</span>
+                         <a class="deleteButton" rel="deleteButton">삭제</a>
+                         </div>
+                    
                         <span class="date" rel="date">${reviewObject['date']}</span>
-
                     </li>`;
 
-                const itemElement = new DOMParser().parseFromString(itemHtml, 'text/html').querySelector('[rel = "item"]');
-                const imageContainerElement = itemElement.querySelector('[rel = "imageContainer"]');
-                if (reviewObject['imageIndexes'].length > 0) {
-                    for (const imageIndex of reviewObject['imageIndexes']) {
-                        const imageElement = document.createElement('img');
-                        imageElement.setAttribute('alt', '');
-                        imageElement.setAttribute('src', `./data/reviewImage?index=${imageIndex}`);
-                        imageElement.classList.add('image');
-                        imageContainerElement.append(imageElement);
-                    }
-                } else {
-                    imageContainerElement.remove();
-                }
-                reviewContainer.append(itemElement);
-            }
-        } else {
-            alert('리뷰를 불러오지 못했습니다.');
-        }
-    }
+                    const itemElement = new DOMParser().parseFromString(itemHtml, 'text/html').querySelector('[rel = "item"]');
 
+                    //리뷰 삭제
+                    itemElement.querySelector('[rel="deleteButton"]').addEventListener('click', e => {
+                        e.preventDefault();
+                        if (!confirm('정말로 리뷰을 삭제할까요?')) {
+                            return false;
+                        }
+                        const xhr = new XMLHttpRequest();
+                        const formData = new FormData();
+                        formData.append('reviewIndex',reviewObject['index']);
+                        xhr.open('DELETE', './data/review');
+                        //--> 컨트롤러로 보내고
+                        //밑에 xhr 이 return 값을 받음
+                        xhr.onreadystatechange = () => {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (xhr.status >= 200 && xhr.status < 300) {
+                                    const responseObject = JSON.parse(xhr.responseText);
+                                    switch (responseObject['result']) {
+                                        case 'success':
+                                            loadReviews(reviewForm['placeIndex'].value);
+                                            break;
+                                        case 'not_signed':
+                                            alert("리뷰를 삭제할 수 있는 권한이 없습니다.");
+                                            break;
+                                        default:
+                                            alert('알 수 없는 이유로 댓글을 삭제하지 못했습니다.\n\n잠시 후 다시 시도해 주세요.');
+                                    }
+                                } else {
+                                    alert('서버와 통신하지 못하였습니다.\n\n잠시 후 다시 시도해 주세요.');
+                                }
+                            }
+                        };
+                        xhr.send(formData);
+                    });
+
+
+                    const imageContainerElement = itemElement.querySelector('[rel = "imageContainer"]');
+                    if (reviewObject['imageIndexes'].length > 0) {
+                        for (const imageIndex of reviewObject['imageIndexes']) {
+                            const imageElement = document.createElement('img');
+                            imageElement.setAttribute('alt', '');
+                            imageElement.setAttribute('src', `./data/reviewImage?index=${imageIndex}`);
+                            imageElement.classList.add('image');
+                            imageContainerElement.append(imageElement);
+                        }
+                    } else {
+                        imageContainerElement.remove();
+                    }
+                    reviewContainer.append(itemElement);
+                }
+            } else {
+                alert('리뷰를 불러오지 못했습니다.');
+            }
+        }
+
+    };
+    xhr.send();
 };
-xhr.send();
-};
+
 
 
 if (reviewForm) { //리뷰 작성 폼은 로그인 안하면 안보임 - 리뷰 폼이 있는가?
@@ -311,6 +347,11 @@ if (reviewForm) { //리뷰 작성 폼은 로그인 안하면 안보임 - 리뷰 
                             alert('로그인이 되어있지않습니다.');
                             break;
                         case 'success':
+                            reviewStarArray.forEach(x => x.classList.remove('selected'));
+                            reviewForm.querySelector('[rel = "score"]').innerText = "-";
+                            reviewForm['content'].value = "";
+                            reviewForm.querySelectorAll('img.image').forEach(x => x.remove());
+                            reviewForm.querySelector('[rel = "noImage"]').classList.remove('hidden');
                             loadReviews(reviewForm['placeIndex'].value); // 성공일 때 리뷰를 불러옴
                             alert('리뷰를 등록하였습니다.');
                             break;

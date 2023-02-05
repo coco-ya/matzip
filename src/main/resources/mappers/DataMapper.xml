@@ -122,5 +122,28 @@
         LIMIT 1
     </select>
 
+    <select id="selectReviewsByReviewIndex"
+            resultType="dev.cocoya.matzip.vos.ReviewVo">
+        select `review`.`index`       AS `index`,
+               `review`.`user_id`     AS `userId`,
+               `review`.`place_index` AS `placeIndex`,
+               `review`.`score`       AS `score`,
+               `review`.`content`     AS `content`,
+               `review`.`date`            as date,
+               `user`.`nickname`      AS `userNickname`
+        FROM `matzip_data`.reviews AS `review`
+                 LEFT JOIN `matzip_member`.users AS `user` ON `review`.`user_id` = `user`.`id`
+        WHERE `review`.`index` = #{index}
+        ORDER BY `review`.`index` DESC
+    </select>
+
+
+    <delete id="deleteReviewByIndex">
+        DELETE
+        FROM `matzip_data`.`reviews`
+        WHERE reviews.`index` = #{index}
+        LIMIT 1
+    </delete>
+
 
 </mapper>

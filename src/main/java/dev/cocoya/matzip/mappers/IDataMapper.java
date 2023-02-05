@@ -35,4 +35,8 @@ public interface IDataMapper {
 
     ReviewImageEntity selectReviewImageByIndex(@Param(value = "index") int index);
 
+    ReviewVo selectReviewsByReviewIndex(@Param(value = "index")int index);
+
+    int deleteReviewByIndex(@Param(value = "index") int index);
+
 }

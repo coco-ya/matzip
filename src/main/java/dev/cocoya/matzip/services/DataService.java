@@ -77,4 +77,21 @@ public class DataService {
         return this.dataMapper.selectReviewImageByIndex(index);
 
     }
+
+    public Enum<? extends IResult> deleteReview(UserEntity signedUser,Integer reviewIndex) {
+        ReviewVo existingReview = this.dataMapper.selectReviewsByReviewIndex(reviewIndex);
+        if (existingReview == null) {
+            return AddReviewResult.FAILURE;
+        }
+        System.out.println(reviewIndex);
+        if (signedUser == null || !signedUser.getId().equals(existingReview.getUserId())) {
+            //앞에 조건이 참이면 뒤에 조건은 안쳐다봐도됨 -> ||
+            //뒤에 조건이 부정이면 로그인한 사람이랑 게시글 작성한 사람이 다르다
+            return AddReviewResult.NOT_SIGNED;
+        }
+
+        return this.dataMapper.deleteReviewByIndex(reviewIndex) > 0
+                ? AddReviewResult.SUCCESS
+                : AddReviewResult.FAILURE;
+    }
 }
