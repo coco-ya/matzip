@@ -187,6 +187,7 @@ const loadPlaces = (ne, sw) => {
     xhr.send();
 };
 
+//위치 정보 권한 허용 누르면 해당 사용자의 위치로 지도 표시
 navigator.geolocation.getCurrentPosition(e => { //권한 허용
     loadMap(e['coords']['latitude'], e['coords']['longitude']);
 }, () => { // 권한 차단
@@ -221,7 +222,12 @@ searchForm['keyword'].addEventListener('input', () => {
 loginButton?.addEventListener('click', e => {
     e.preventDefault();
     loginContainer.classList.add('visible');
-    window.open('https://kauth.kakao.com/oauth/authorize?client_id=c2204b6ef796ea3923e04483a8e6a9c5&redirect_uri=http://localhost:8080/member/kakao&response_type=code', '_blank', 'width=500; height=750'); //팝업 창 염
+    let popup = window.open('about:blank', '_blank', 'width=500; height=750'); //팝업 창 염
+    let href = e.target.href;
+    console.log(href);
+    setTimeout(() => {
+        popup.location.href = href;
+    }, 50);
 });
 
 

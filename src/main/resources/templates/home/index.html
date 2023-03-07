@@ -27,7 +27,7 @@
 
         </label>
         <div class="button-container">
-            <a class="button" href="https://kauth.kakao.com/oauth/authorize?client_id=c2204b6ef796ea3923e04483a8e6a9c5&redirect_uri=http://localhost:8080/member/kakao&response_type=code" id="loginButton" target="_blank" th:if="${session.user == null}">로그인</a>
+            <a class="button" th:href="@{'https://kauth.kakao.com/oauth/authorize?'(client_id='c2204b6ef796ea3923e04483a8e6a9c5',redirect_uri=(${#request.getScheme()} + '://' + ${#request.getServerName()} + '/member/kakao'), response_type='code')}" id="loginButton" target="_blank" th:if="${session.user == null}">로그인</a>
 
             <a class="button" th:href="@{/member/logout}" id="logoutButton" th:if = "${session.user!=null}">로그아웃</a>
         </div>

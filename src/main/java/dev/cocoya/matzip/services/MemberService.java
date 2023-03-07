@@ -19,7 +19,7 @@ public class MemberService {
         this.memberMapper = memberMapper;
     }
 
-    public String getKakaoAccessToken(String code) throws IOException {
+    public String getKakaoAccessToken(String code, String redirectUri) throws IOException {
         URL url = new URL("https://kauth.kakao.com/oauth/token");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -30,7 +30,7 @@ public class MemberService {
                 StringBuilder requestBuilder = new StringBuilder();
                 requestBuilder.append("grant_type=authorization_code");
                 requestBuilder.append("&client_id=c2204b6ef796ea3923e04483a8e6a9c5");
-                requestBuilder.append("&redirect_uri=http://localhost:8080/member/kakao");
+                requestBuilder.append(String.format("&redirect_uri=%s", redirectUri));
                 requestBuilder.append("&code=").append(code);
                 bufferedWriter.write(requestBuilder.toString());
                 bufferedWriter.flush();

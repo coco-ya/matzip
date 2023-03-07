@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -28,9 +29,13 @@ public class MemberController {
     public ModelAndView getKakao(@RequestParam(value = "code") String code,
                                  @RequestParam(value = "error", required = false) String error,
                                  @RequestParam(value = "error_description", required = false) String errorDescription,
+                                 HttpServletRequest request,
                                  HttpSession session) throws
             IOException {
-        String accessToken = this.memberService.getKakaoAccessToken(code);
+        String redirectUri = String.format("%s://%s/member/kakao",
+                request.getScheme(),
+                request.getServerName());
+        String accessToken = this.memberService.getKakaoAccessToken(code,redirectUri);
         UserEntity user = this.memberService.getKakaoUserInfo(accessToken);
         session.setAttribute("user", user);
         return new ModelAndView("member/kakao");
