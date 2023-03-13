@@ -431,7 +431,7 @@ body {
 
 #detailContainer > .rate-container > .star-container {
     letter-spacing: 0.1rem;
-
+    margin-bottom: 1rem;
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -564,13 +564,27 @@ body {
     flex-direction: column;
     justify-content: flex-start;
 }
+#detailContainer > .review-container > .item >.top-container{
+    display: flex;
+}
 
-#detailContainer > .review-container > .item > .nickname {
+#detailContainer > .review-container > .item > .top-container > .star-container {
+    display: flex;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: rgb(213, 216, 220);
+}
+
+#detailContainer > .review-container > .item > .top-container > .star-container > .star.filled {
+    color: rgb(211, 84, 0);
+}
+
+#detailContainer > .review-container > .item >.top-container >.nickname {
     color: rgb(0, 0, 0);
     font-weight: 600;
     flex: 1;
     font-size: 0.9rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
 }
 
 #detailContainer > .review-container > .item > .image-container {

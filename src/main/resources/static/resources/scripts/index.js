@@ -247,15 +247,33 @@ const loadReviews = (placeIndex) => {
                 for (const reviewObject of responseArray) {
                     const itemHtml = `
                     <li class="item" rel="item">
-                        <span class="nickname" rel="nickname">${reviewObject['userNickname']}</span>
+                    <div class="top-container">
+                     <span class="nickname" rel="nickname">${reviewObject['userNickname']}</span>
+                        <div class="star-container" rel="starContainer">
+                              <i class="star fa-solid fa-star
+                              ${reviewObject['score'] >= 1 ? 'filled' : ''}"></i>
+                              <i class="star fa-solid fa-star
+                              ${reviewObject['score'] >= 2 ? 'filled' : ''}"></i>
+                              <i class="star fa-solid fa-star
+                              ${reviewObject['score'] >= 3 ? 'filled' : ''}"></i>
+                              <i class="star fa-solid fa-star
+                              ${reviewObject['score'] >= 4 ? 'filled' : ''}"></i>
+                              <i class="star fa-solid fa-star
+                              ${reviewObject['score'] >= 5 ? 'filled' : ''}"></i>
+                        </div>
+                    </div>
+                       
+                        
                         <div class="image-container" rel="imageContainer">
                         </div>
+                        
                         <div class="contentDelete">
                             <span class="content" rel="content">${reviewObject['content']}</span>
                          <a class="deleteButton" rel="deleteButton">삭제</a>
                          </div>
                     
                         <span class="date" rel="date">${reviewObject['date']}</span>
+
                     </li>`;
 
                     const itemElement = new DOMParser().parseFromString(itemHtml, 'text/html').querySelector('[rel = "item"]');
