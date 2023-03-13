@@ -432,9 +432,18 @@ if (reviewForm) { //리뷰 작성 폼은 로그인 안하면 안보임 - 리뷰 
             imageContainerElement.append(imgElement);
         }
     });
-
-
 }
+
+// window.postMessage(data, [ports], targerOrigin)
+
+// 데이터 수신
+window.onmessage = function(e){
+    if(e.origin === "https://matzip.cocoyami.com"){
+        // 처리
+        console.log(e.data);
+    }
+}
+
 
 
 
