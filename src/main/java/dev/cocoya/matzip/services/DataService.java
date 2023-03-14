@@ -41,6 +41,9 @@ public class DataService {
         if (this.dataMapper.insertReview(review) == 0) {
             return AddReviewResult.FAILURE;
         }
+        if(review.getContent().length() > 100){
+            return AddReviewResult.CONTENT;
+        }
         if (images != null && images.length > 0) {
             for (MultipartFile image : images) {
                 ReviewImageEntity reviewImage = new ReviewImageEntity();

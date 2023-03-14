@@ -37,6 +37,7 @@ detailContainer.show = (placeObject) => {
         detailContainer.querySelector('[rel="reviewExist"]').classList.remove('visible');
     }
 
+
     // 홈페이지
     const homepageTextElement = detailContainer.querySelector('[rel="homepageText"]');
     if (placeObject['homepage']) {
@@ -368,7 +369,7 @@ if (reviewForm) { //리뷰 작성 폼은 로그인 안하면 안보임 - 리뷰 
                     const responseObject = JSON.parse(xhr.responseText);
                     switch (responseObject['result']) {
                         case 'not_signed':
-                            alert('로그인이 되어있지않습니다.');
+                            alert('로그인 후 리뷰를 작성해주세요.');
                             break;
                         case 'success':
                             reviewStarArray.forEach(x => x.classList.remove('selected'));
@@ -378,6 +379,9 @@ if (reviewForm) { //리뷰 작성 폼은 로그인 안하면 안보임 - 리뷰 
                             reviewForm.querySelector('[rel = "noImage"]').classList.remove('hidden');
                             loadReviews(reviewForm['placeIndex'].value); // 성공일 때 리뷰를 불러옴
                             alert('리뷰를 등록하였습니다.');
+                            break;
+                        case 'content':
+                            alert('100자 이하로 작성해주세요.');
                             break;
                         default:
                             alert('알 수 없는 오류');
@@ -434,15 +438,6 @@ if (reviewForm) { //리뷰 작성 폼은 로그인 안하면 안보임 - 리뷰 
     });
 }
 
-// window.postMessage(data, [ports], targerOrigin)
-
-// 데이터 수신
-window.onmessage = function(e){
-    if(e.origin === "https://matzip.cocoyami.com"){
-        // 처리
-        console.log(e.data);
-    }
-}
 
 
 
